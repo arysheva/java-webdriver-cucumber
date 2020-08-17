@@ -189,7 +189,7 @@ public class JavaStepDefs {
 
         String swap;
         swap = info.get("firstName");
-        info.put("firstName", "George");
+        info.put("firstName", info.get("middleName"));
         info.put("middleName", swap);
 
         for(String key : info.keySet()) {

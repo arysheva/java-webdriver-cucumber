@@ -91,8 +91,7 @@ public class WdStepDefs {
     public void iVerifyThatFieldsValuesRecordedCorrectly() {
         assertThat(getDriver().findElement(By.xpath("//div[@id='quotePageResult']")).isDisplayed()).isTrue();
         assertThat(getDriver().findElement(By.xpath("//b[@name='name']")).getText()).isEqualToIgnoringCase("Anna Rostova");
-        assertThat(getDriver().findElement(By.xpath("//b[@name='email']")).getText()).isEqualToIgnoringCase("anna@aa.aa");
-        assertThat(getDriver().findElement(By.xpath("//input[@name='email']")).getText()).isEqualToIgnoringCase("here_your_e-mail");
+        assertThat(getDriver().findElement(By.xpath("//b[@name='email']")).getText()).isEqualToIgnoringCase("anna@a.ru");
 
 
     }
