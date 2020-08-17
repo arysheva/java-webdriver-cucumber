@@ -6,7 +6,9 @@ import cucumber.api.java.en.When;
 import gherkin.ast.ScenarioOutline;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 public class JavaStepDefs {
     @Given("I say hello world")
@@ -176,6 +178,23 @@ public class JavaStepDefs {
 
         }
 
+
+    }
+
+    @And("I work with map")
+    public void iWorkWithMap() {
+        Map<String, String> info = new LinkedHashMap<>();
+        info.put("firstName", "John");
+        info.put("middleName", "George");
+
+        String swap;
+        swap = info.get("firstName");
+        info.put("firstName", "George");
+        info.put("middleName", swap);
+
+        for(String key : info.keySet()) {
+            System.out.println(key + ": " + info.get(key));
+        }
 
     }
 }

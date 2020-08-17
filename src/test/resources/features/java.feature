@@ -11,19 +11,21 @@
 
     @java2
       Scenario: Java Practice
-      And I work with String
-      And I calculate numbers
-      When I print url for "google" page
-      And I print url for "Yahoo" page
-      And I print url for "sample" page
-      And I work with arrays
-      And And I print if number "35" is positive
-      And And I print if number "-45" is positive
-      And And I print if number "0" is positive
-      And I print "7" th day of week
-      And I print "2" th day of week
-      And I print "5" th day of week
-      And I print "0" th day of week
+      #And I work with String
+      #And I calculate numbers
+      #When I print url for "google" page
+      #And I print url for "Yahoo" page
+      #And I print url for "sample" page
+      #And I work with arrays
+      #And And I print if number "35" is positive
+      #And And I print if number "-45" is positive
+      #And And I print if number "0" is positive
+      #And I print "7" th day of week
+      #And I print "2" th day of week
+      #And I print "5" th day of week
+      #And I print "0" th day of week
+      And I work with map
+
 
 
 
