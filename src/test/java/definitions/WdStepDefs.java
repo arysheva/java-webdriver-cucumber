@@ -8,22 +8,33 @@ import cucumber.api.java.en.When;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Keys;
+import org.openqa.selenium.logging.LogEntries;
+import org.openqa.selenium.logging.LogEntry;
+import org.openqa.selenium.logging.LogType;
+
 import static org.assertj.core.api.Assertions.assertThat;
+
 
 
 public class WdStepDefs {
     @Given("I go to {string} page")
     public void iGoToPage(String page) {
-        if(page.equalsIgnoreCase("quote")) {
-            getDriver().get("https://skryabin.com/market/quote.html");
-        }
-        else if (page.equalsIgnoreCase("google"))
-        {
-            getDriver().get("https://www.google.com/");
-        }
-        else
-        {
-            throw new RuntimeException("Unsupported page! " + page);
+
+        switch(page) {
+            case "google":
+                getDriver().get("https://www.google.com/");
+                break;
+            case "usps":
+                getDriver().get("https://www.usps.com/");
+                break;
+            case "quote":
+                getDriver().get("https://skryabin.com/market/quote.html");
+                break;
+            case "bing":
+                getDriver().get("https://www.bing.com/");
+                break;
+            default:
+                throw new RuntimeException("Unsupported page! " + page);
         }
 
 
@@ -92,7 +103,17 @@ public class WdStepDefs {
         assertThat(getDriver().findElement(By.xpath("//div[@id='quotePageResult']")).isDisplayed()).isTrue();
         assertThat(getDriver().findElement(By.xpath("//b[@name='name']")).getText()).isEqualToIgnoringCase("Anna Rostova");
         assertThat(getDriver().findElement(By.xpath("//b[@name='email']")).getText()).isEqualToIgnoringCase("anna@a.ru");
+    }
 
+    @And("I print logs to the console")
+    public void iPrintLogsToTheConsole() {
+        LogEntries logs = getDriver().manage().logs().get(LogType.BROWSER);
+        System.out.println("------------Logs Begin------------ ");
+        for (LogEntry log: logs) {
+            System.out.println(log);
+            
+        }
 
+        System.out.println("------------Logs End------------ ");
     }
 }

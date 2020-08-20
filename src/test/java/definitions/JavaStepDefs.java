@@ -3,9 +3,7 @@ package definitions;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.When;
-import gherkin.ast.ScenarioOutline;
 
-import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -80,18 +78,6 @@ public class JavaStepDefs {
 
     @When("I print url for {string} page")
     public void iPrintUrlForPage(String site) {
-       /* if (site.equals("google"))
-        {
-            System.out.println("http://www.google.com");
-        }
-        else if (site.equals("sample")) {
-            System.out.println("https://skryabin.com/webdriver/html/sample.html");
-        }
-        else
-        {
-            System.out.println("Sorry, " + site + " is unknown site");
-        }*/
-
         switch (site){
             case "google":
                 System.out.println("http://www.google.com");
@@ -197,4 +183,101 @@ public class JavaStepDefs {
         }
 
     }
+
+    @Given("I solve coding challenges")
+    public void iSolveCodingChallenges() {
+        int n, m;
+        n = 15;
+        m = 10;
+        Map<String, String> info = new LinkedHashMap<>();
+        info.put("firstName", "John");
+        info.put("middleName", "George");
+
+        swapMap(info);
+        swap(n, m);
+
+        System.out.println(n);
+        System.out.println(m);
+
+        int[] numbers = {5, 2, 9, 7, 3};
+        System.out.println("---------------------------");
+        for(int i=0; i<numbers.length; i++){
+            System.out.print(numbers[i] + " ");
+        }
+        System.out.println("\n---------------------------");
+
+        swapElementsInArray(numbers, 2, 4);
+
+        for(int i=0; i<numbers.length; i++){
+            System.out.print(numbers[i] + " ");
+        }
+
+        System.out.println();
+        String S;
+        S = divisibleInt(17);
+        System.out.println(S);
+        S = divisibleInt(12);
+        System.out.println(S);
+        S = divisibleInt(6);
+        System.out.println(S);
+        S = divisibleInt(8);
+        System.out.println(S);
+
+    }
+
+    void swap(int a, int b)
+    {
+        a = a + b;
+        b = a - b;
+        a = a - b;
+
+    }
+
+    void swapElementsInArray(int[] arr, int index1, int index2)
+    {
+        int temp;
+        temp = arr[index1];
+        arr[index1] = arr[index2];
+        arr[index2] = temp;
+    }
+
+    public String divisibleInt(int number)
+    {
+        String result = "";
+        if (number % 3 == 0)
+        {
+            if(number %4 == 0)
+            {
+                result = "Divisible by 3 and 4";
+            }
+            else
+            {
+                result = "Divisible by 3";
+            }
+        }else if (number % 4 == 0)
+        {
+            result = "Divisible by 4";
+        }
+        else{
+            result = "not divisible by 3 or 4";
+        }
+        return result;
+    }
+
+    void swapMap(Map<String, String> info)
+    {
+        System.out.println("info: " + info );
+
+        String temp = info.get("firstName");
+        info.put("firstName", info.get("middleName"));
+        info.put("middleName", temp);
+
+        System.out.println("info: " + info );
+
+    }
+
+
+
+
 }
+
