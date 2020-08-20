@@ -206,7 +206,7 @@ public class JavaStepDefs {
         }
         System.out.println("\n---------------------------");
 
-        swapElementsInArray(numbers, 2, 4);
+        swapElementsInArray(numbers, 3, 5);
 
         for(int i=0; i<numbers.length; i++){
             System.out.print(numbers[i] + " ");
@@ -236,9 +236,9 @@ public class JavaStepDefs {
     void swapElementsInArray(int[] arr, int index1, int index2)
     {
         int temp;
-        temp = arr[index1];
-        arr[index1] = arr[index2];
-        arr[index2] = temp;
+        temp = arr[index1-1];
+        arr[index1-1] = arr[index2-1];
+        arr[index2-1] = temp;
     }
 
     public String divisibleInt(int number)
