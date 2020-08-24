@@ -277,6 +277,127 @@ public class JavaStepDefs {
     }
 
 
+    @And("I solve more coding challenges")
+    public void iSolveMoreCodingChallenges() {
+        PrintNumFrom0(10);
+        System.out.println();
+
+        PrintAllNumbers(-10, -5);
+        System.out.println();
+
+        int[] myArray = {2, 5, 6, 7, 8, 9, 9, 9, 0 ,-5, -23};
+        int[] array = {};
+        PrintArray(myArray);
+        System.out.println();
+
+        PrintEvenNum(myArray);
+        System.out.println();
+
+        System.out.println(IsEmpty(array));
+        System.out.println(IsEmpty(myArray));
+
+        System.out.println(ContainsElement(myArray, 100));
+
+        PrintFizzBuzz(20);
+
+
+    }
+    // 1) Write a function that prints all numbers from 0 up to n
+    void PrintNumFrom0(int n)
+    {
+        for(int i=0; i<=n;i++)
+        {
+            System.out.print(i + " ");
+        }
+    }
+    //2) Write a function that supports also negative numbers
+
+    void PrintAllNumbers(int start, int n)
+    {
+        for(int i=start; i<=n;i++)
+        {
+            System.out.print(i + " ");
+        }
+    }
+
+    //3) Write a function that prints all integer array
+
+    void PrintArray(int[] arr)
+    {
+        for(int i=0; i<arr.length; i++)
+        {
+            System.out.print(arr[i] + " ");
+        }
+    }
+
+    //4) Write a function that prints all even numbers from integer array
+
+    void PrintEvenNum(int[] arr)
+    {
+        for(int i=0; i<arr.length; i++)
+        {
+            if(arr[i] % 2 == 0)
+            {
+                System.out.print(arr[i] + " ");
+            }
+        }
+    }
+
+    // 5) Write a function that checks if array is empty
+    boolean IsEmpty(int[] arr)
+    {
+        if (arr.length == 0) {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+
+    }
+
+    // 6) Write a function that checks if array contains another element
+    boolean ContainsElement(int[] arr, int n)
+    {
+        for(int i=0; i<arr.length; i++)
+        {
+            if(arr[i] == n) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    // 7) Write a function, accepts integer argument
+    //It should print all the numbers up to the argument
+    // BUT:
+    //if number is multiple of 3, it should print Fizz instead of number
+    //if number is multiple of 5, it should print Buzz instead of number
+    //If it is multiple of both 3 and 5, it should print FizzBuzz instead of number
+
+    void PrintFizzBuzz(int n)
+    {
+        for(int i=1; i<=n; i++)
+        {
+            if(i%3 == 0)
+            {
+                if(i%5 == 0) {
+                    System.out.print("FizzBuzz ");
+                }
+                else
+                {
+                    System.out.print("Fizz ");
+                }
+            }else if (i%5 == 0)
+            {
+                System.out.print("Buzz ");
+            }
+            else
+            {
+                System.out.print(i + " ");
+            }
+        }
+    }
 
 
 }

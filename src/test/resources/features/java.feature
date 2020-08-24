@@ -28,8 +28,12 @@
 
 
     @java3
-    Scenario: Codding challenges
-      Given I solve coding challenges
+    Scenario: Coding challenges
+      #Given I solve coding challenges
+      Given I solve more coding challenges
+
+
+
 
 
 
