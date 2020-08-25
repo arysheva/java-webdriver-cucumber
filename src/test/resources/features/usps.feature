@@ -34,7 +34,6 @@
       And I perform "Quadcopters delivery" help search
       Then I verify that no results of "Quadcopters delivery" available in help search
 
-
     @usps5
     Scenario: Phone number of the nearest Mail Pickup
       Given I go to "usps" page

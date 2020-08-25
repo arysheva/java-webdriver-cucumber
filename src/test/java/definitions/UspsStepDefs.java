@@ -168,9 +168,12 @@ public class UspsStepDefs {
     }
 
     @And("I click {string} button")
-    public void iClickButton(String button) {
-        getDriver().findElement(By.xpath("//a[@class='button--primary']")).click();
-
+    public void iClickButton(String button) throws InterruptedException {
+        WebElement element = getDriver().findElement(By.xpath("//a[@class='button--primary']"));
+        JavascriptExecutor executor = (JavascriptExecutor) getDriver();
+        executor.executeScript("arguments[0].click();", element);
+        WebDriverWait wait = new WebDriverWait(getDriver(), 5);
+        wait.until(ExpectedConditions.numberOfWindowsToBe(2));
     }
 
     @Then("I validate that Sign In is required")

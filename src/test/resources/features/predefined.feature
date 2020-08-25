@@ -179,7 +179,7 @@ Feature: Smoke steps
     And I type "a@.c" into element with xpath "//input[@name='email']"
     And I click on element with xpath "//button[@id='formSubmit']"
     Then element with xpath "//label[@id='email-error']" should be displayed
-    When I clear element with xpath "//input[@name='email']"
+    When I clear element with xpath "//*[@name='email']"
     And I type "a@a.c" into element with xpath "//input[@name='email']"
     And I click on element with xpath "//button[@id='formSubmit']"
     Then element with xpath "//label[@id='email-error']" should not be displayed
