@@ -33,6 +33,12 @@ public class WdStepDefs {
             case "bing":
                 getDriver().get("https://www.bing.com/");
                 break;
+            case "converter":
+                getDriver().get("https://www.unitconverters.net/");
+                break;
+            case "calculator":
+                getDriver().get("https://www.calculator.net/");
+                break;
             default:
                 throw new RuntimeException("Unsupported page! " + page);
         }
@@ -115,5 +121,46 @@ public class WdStepDefs {
         }
 
         System.out.println("------------Logs End------------ ");
+    }
+
+
+
+    @And("I {string} third party agreement")
+    public void iThirdPartyAgreement(String action) {
+        getDriver().findElement(By.xpath("//button[@id='thirdPartyButton']")).click();
+        if(action.equalsIgnoreCase("accept"))
+        {
+            getDriver().switchTo().alert().accept();
+        }else if (action.equalsIgnoreCase("dismiss"))
+        {
+            getDriver().switchTo().alert().dismiss();
+        }
+        else
+        {
+            throw new RuntimeException("Incorrect action " + action);
+        }
+    }
+
+    @And("I fill out {string} name and {string} phone")
+    public void iFillOutNameAndPhone(String name, String phone) {
+
+        getDriver().switchTo().frame(0);
+        getDriver().findElement(By.xpath("//input[@id='contactPersonName']")).sendKeys(name);
+        getDriver().findElement(By.xpath("//input[@id='contactPersonPhone']")).sendKeys(phone);
+        getDriver().switchTo().defaultContent();
+
+    }
+
+    @And("I verify document list")
+    public void iVerifyDocumentList() {
+        getDriver().findElement(By.xpath("//button[contains(@onclick, 'new')]")).click();
+        //String AllDocText = getDriver().findElement(By.xpath("//body")).getText();
+        String oWindow = getDriver().getWindowHandle();
+        getDriver().getWindowHandles().forEach(h->getDriver().switchTo().window(h));
+
+        getDriver().switchTo().window(oWindow);
+
+
+
     }
 }

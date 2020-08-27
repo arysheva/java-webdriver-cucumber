@@ -1,5 +1,6 @@
 package definitions;
 
+import static java.lang.StrictMath.abs;
 import static support.TestContext.getDriver;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -13,8 +14,11 @@ import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import javax.swing.text.html.parser.Parser;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
+//import static java.lang.Math;
 import java.util.concurrent.TimeUnit;
 
 public class UspsStepDefs {
@@ -78,9 +82,11 @@ public class UspsStepDefs {
     @When("I perform {string} search")
     public void iPerformSearch(String StringForSearch) throws InterruptedException {
         getDriver().manage().window().maximize();
+
         Actions action = new Actions(getDriver());
         WebElement Search = getDriver().findElement(By.xpath("//a[@id='navsearch']/following-sibling::a"));
         action.moveToElement(Search).perform();
+
         getDriver().findElement(By.xpath("//input[contains(@id,'track-search')]")).sendKeys(StringForSearch);
         getDriver().findElement(By.xpath("//input[contains(@id,'track-search')]")).sendKeys(Keys.RETURN);
         //getDriver().findElement(By.xpath("//ul[@class='nav-list']//a[contains(@href, 'keyword=Free')]")).click();
@@ -179,5 +185,82 @@ public class UspsStepDefs {
     @Then("I validate that Sign In is required")
     public void iValidateThatSignInIsRequired() throws InterruptedException {
         assertThat(getDriver().getTitle()).contains("Sign In");
+    }
+
+    @When("I do something")
+    public void iDoSomething() {
+        WebDriverWait wait = new WebDriverWait(getDriver(),5);
+        WebElement result = getDriver().findElement(By.xpath(""));
+        wait.until(ExpectedConditions.textToBePresentInElement(result, "hello"));
+        wait.until(driver -> result.getText().contains("hello"));
+    }
+
+    @When("I go to {string} under {string}")
+    public void iGoToUnder(String link, String tab) {
+        Actions action = new Actions(getDriver());
+        WebElement tabElement = getDriver().findElement(By.xpath("//a[text()='" + tab + "']"));
+        WebElement linkElement = getDriver().findElement(By.xpath("//a[text()='" + link + "']"));
+        action.moveToElement(tabElement).click(linkElement).perform();
+
+
+    }
+
+    @And("I search for {string}")
+    public void iSearchFor(String address) {
+        getDriver().findElement(By.xpath("//input[@id='address']")).sendKeys(address);
+        getDriver().findElement(By.xpath("//button[contains(@class, 'icon-search')]")).click();
+
+    }
+
+    @And("I click {string} on the map")
+    public void iClickOnTheMap(String tab) throws InterruptedException {
+        WebDriverWait wait = new WebDriverWait(getDriver(), 15);
+
+        WebElement overlay = getDriver().findElement(By.xpath("//div[@id='eddm_overlay-progress'][not(@hidden)]"));
+        wait.until(ExpectedConditions.attributeToBe(overlay, "class", "hide"));
+        wait.until(ExpectedConditions.invisibilityOf(overlay));
+        // From Ozzy  (still unstable)
+        //=======================================
+        WebElement table = getDriver().findElement(By.xpath("//div[@id='route-table']"));
+        wait.until(ExpectedConditions.visibilityOf(table));
+        //========================================
+
+        Thread.sleep(3000);
+        getDriver().findElement(By.xpath("//a[@class='route-table-toggle']")).click();
+    }
+
+    @When("I click {string} on the table")
+    public void iClickOnTheTable(String selectAll) {
+        getDriver().findElement(By.xpath("//a[@class='totalsArea']")).click();
+    }
+
+    @And("I close modal window")
+    public void iCloseModalWindow() {
+        getDriver().findElement(By.xpath("//div[@id='modal-box-closeModal']")).click();
+    }
+
+    @Then("I verify that summary of all rows of Cost column is equal Approximate Cost in Order Summary")
+    public void iVerifyThatSummaryOfAllRowsOfCostColumnIsEqualApproximateCostInOrderSummary() throws InterruptedException {
+        //====Tried to scroll down
+            //getDriver().findElement(By.xpath("//div[@class='dojoxGridContent']"))
+            //getDriver().manage().window().maximize();
+            //WebElement element = getDriver().findElement(By.xpath("//div[@class='dojoxGridContent']"));
+            //div[@class='dojoxGridContent']
+            //div[@class='dojoxGridContent']/div[2]
+            //((JavascriptExecutor)getDriver()).executeScript("arguments[0].scrollIntoView();", element);
+            //Thread.sleep(3000);
+        //==================================
+        List<WebElement> rows = getDriver().findElements(By.xpath("//div[@class='dojoxGridScrollbox']//td[8]"));
+        double ActualCost = 0;
+
+        for(int i=0; i<rows.size();i++)
+        {
+            String s = rows.get(i).getText();
+            ActualCost += Double.parseDouble(s.substring(s.lastIndexOf("$")+1));
+        }
+
+        double eps = 10;
+        String ApproximateCost = getDriver().findElement(By.xpath("//span[@class='approx-cost']")).getText();
+        assertThat(abs(Float.parseFloat(ApproximateCost) - ActualCost) < eps).isTrue();
     }
 }

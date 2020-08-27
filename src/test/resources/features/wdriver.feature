@@ -13,3 +13,11 @@
       And I submit the page
       Then I verify that fields values recorded correctly
       And I print logs to the console
+
+
+    @wd2
+    Scenario: Practice with window switch
+      Given I go to "quote" page
+      And I "accept" third party agreement
+      And I fill out "Anna Ann" name and "4088169000" phone
+      And I verify document list

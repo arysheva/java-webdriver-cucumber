@@ -30,7 +30,10 @@
     @java3
     Scenario: Coding challenges
       #Given I solve coding challenges
-      Given I solve more coding challenges
+      #Given I solve more coding challenges
+      Given I write lambda
+
+
 
 
 

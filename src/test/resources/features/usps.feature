@@ -41,3 +41,18 @@
       And I filter by "Post Offices" location types, "Pickup Services" services, "Accountable Mail" available services
       And I provide data as "4970 El Camino Real 110" street, "Los Altos" city, "CA" state
       Then I verify phone number is "800-275-8777"
+
+    @usps6
+    Scenario: Phone number of the nearest Mail Pickup
+      Given I go to "usps" page
+      When I do something
+
+    @usps7
+    Scenario: Every door direct mail
+      Given I go to "usps" page
+      When I go to "Every Door Direct Mail" under "Business"
+      And I search for "370 Elan Village Ln, San Jose, California, 95134"
+      And I click "Show Table" on the map
+      When I click "Select All" on the table
+      And I close modal window
+      Then I verify that summary of all rows of Cost column is equal Approximate Cost in Order Summary

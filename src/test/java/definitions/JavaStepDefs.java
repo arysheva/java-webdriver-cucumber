@@ -4,9 +4,7 @@ import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.When;
 
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class JavaStepDefs {
     @Given("I say hello world")
@@ -400,5 +398,20 @@ public class JavaStepDefs {
     }
 
 
+    @And("I write lambda")
+    public void iWriteLambda() {
+        var intList= Arrays.asList(3,8,11,2,1,0);
+        System.out.println(intList);
+//        intList.sort(new Comparator<Integer>() {
+//            @Override
+//            public int compare(Integer o1, Integer o2) {
+//                return o1 - o2;
+//            }
+//        });
+        intList.sort((o1,o2) -> o1-o2);
+
+        System.out.println(intList);
+
+    }
 }
 
