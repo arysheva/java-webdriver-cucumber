@@ -277,29 +277,56 @@ public class JavaStepDefs {
 
     @And("I solve more coding challenges")
     public void iSolveMoreCodingChallenges() {
-        PrintNumFrom0(10);
-        System.out.println();
+//        PrintNumFrom0(10);
+//        System.out.println();
+//
+//        PrintAllNumbers(-10, -5);
+//        System.out.println();
+//
+//        int[] myArray = {2, 5, 6, 7, 8, 9, 9, 9, 0 ,-5, -23};
+//        int[] array = {};
+//        PrintArray(myArray);
+//        System.out.println();
+//
+//        PrintEvenNum(myArray);
+//        System.out.println();
+//
+//        System.out.println(IsEmpty(array));
+//        System.out.println(IsEmpty(myArray));
+//
+//        System.out.println(ContainsElement(myArray, 100));
+//
+//        //PrintFizzBuzz(20);
+        String s = "Hello Everyone!";
 
-        PrintAllNumbers(-10, -5);
-        System.out.println();
+        System.out.println(getReverse(s));
+        reverse(s);
 
-        int[] myArray = {2, 5, 6, 7, 8, 9, 9, 9, 0 ,-5, -23};
-        int[] array = {};
-        PrintArray(myArray);
-        System.out.println();
-
-        PrintEvenNum(myArray);
-        System.out.println();
-
-        System.out.println(IsEmpty(array));
-        System.out.println(IsEmpty(myArray));
-
-        System.out.println(ContainsElement(myArray, 100));
-
-        PrintFizzBuzz(20);
-
+        System.out.println(s);
 
     }
+
+    void reverse(String s)
+    {
+        System.out.println("Reversed string: ");
+        for (int i=s.length()-1; i>=0;i--)
+        {
+            System.out.print(s.charAt(i));
+        }
+        System.out.println();
+
+    }
+
+    String getReverse(String s)
+    {
+        String reversed = "";
+        for (int i=s.length()-1; i>=0;i--)
+        {
+            reversed += s.charAt(i);
+        }
+        return reversed;
+    }
+
     // 1) Write a function that prints all numbers from 0 up to n
     void PrintNumFrom0(int n)
     {
@@ -344,7 +371,7 @@ public class JavaStepDefs {
     // 5) Write a function that checks if array is empty
     boolean IsEmpty(int[] arr)
     {
-        if (arr.length == 0) {
+        if (arr == null || arr.length == 0) { //null first!! it is safe
             return true;
         }
         else
@@ -412,6 +439,60 @@ public class JavaStepDefs {
 
         System.out.println(intList);
 
+
     }
+
+    @Given("I write functions")
+    public void iWriteFunctions() {
+        printRange(2);
+        printRange(20);
+        printRange(13);
+        printRange(130);
+        printRange(30);
+        printRange(19);
+        printRange(21);
+        printRange(29);
+        printEveryN("WebDriver", 3);
+        System.out.println();
+        System.out.println(Yoda("I am happy"));
+
+    }
+    //User inputs two numbers which are divided by 5.
+    // If a number is in a range of 1..10 - print it saying it
+    // is in the range of 1 from 10. If a number is in the range of 10..20
+    // - print it saying it's in the range of 10..20.
+    void printRange(int number)
+    {
+        int n = number/10*10;
+        System.out.println(number + " it is the range of " + (n) + " and " + (n+10));
+    }
+
+    //Reverse every third character of a string. (Example: "WebDriver" => "vDW")
+
+    void printEveryN (String s, int n)
+    {
+        for (int i=s.length()-n; i>=0; i-=n)
+        {
+            System.out.print(s.charAt(i));
+        }
+    }
+
+    //Speak like Yoda - reverse words in a sentence
+    // (Example: "I am Automation Engineer" => "Engineer Automation am I")
+    // (hint - method .split(" "))
+
+    String Yoda(String s)
+    {
+        String result = "";
+        String arr[] = s.split(" ");
+        for (int i=arr.length-1; i>=0; i--)
+        {
+            result += arr[i] + " ";
+        }
+
+        return result;
+    }
+
+    
 }
 

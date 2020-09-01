@@ -32,6 +32,7 @@ Feature: Smoke steps
     Then I wait for element with xpath "//div[@id='b_content']" to be present
     Then element with xpath "//div[@id='b_content']" should contain text "Cucumber"
 
+
   @predefined4
   Scenario: Predefined steps for Gibiru
     Given I open url "https://gibiru.com/"
@@ -40,8 +41,8 @@ Feature: Smoke steps
     When I type "behavior driven development" into element with xpath "//input[@id='q']"
     Then I click on element with xpath "//button[@id='button-addon2']/i"
     Then I wait for element with xpath "//div[@class='gsc-wrapper']" to be present
-    Then I wait for 3 sec
-    Then element with xpath "//div[@class='gsc-wrapper']" should contain text "Cucumber"
+    Then I wait for 5 sec
+    Then element with xpath "//div[@class='gsc-wrapper']" should contain text "Behavior-driven development"
 
   @predefined5
   Scenario: Predefined steps for DuckDuckGo
@@ -67,8 +68,8 @@ Feature: Smoke steps
   Scenario: Predefined steps for Searchencrypt
     Given I open url "https://www.searchencrypt.com/home"
     Then I should see page title as "Search Encrypt | Home"
-    Then element with xpath "//div[@id='autosuggest']/input" should be present
-    When I type "behavior driven development" into element with xpath "//div[@id='autosuggest']/input"
+    Then element with xpath "//input[@placeholder='Search...']" should be present
+    When I type "behavior driven development" into element with xpath "//input[@placeholder='Search...']"
     Then I click on element with xpath "//i[@class='fas fa-search']"
     Then I wait for element with xpath "//section[@class='serp__results container']" to be present
     Then I wait for 3 sec
@@ -285,9 +286,7 @@ Feature: Smoke steps
     And element with xpath "//b[@name='name']" should have text as "Anna"
 
 
-    
-    
-    
+
 
 
 
