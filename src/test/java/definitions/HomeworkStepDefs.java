@@ -5,6 +5,7 @@ import static support.TestContext.getDriver;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
+import org.assertj.core.data.Percentage;
 import org.openqa.selenium.By;
 import static org.assertj.core.api.Assertions.assertThat;
 public class HomeworkStepDefs {
@@ -25,6 +26,9 @@ public class HomeworkStepDefs {
         String actualResult = getDriver().findElement(By.xpath("//input[@name='toVal']")).getAttribute("value");
         double eps = 1;
         assertThat(abs(Float.parseFloat(result) - Float.parseFloat(actualResult))<eps).isTrue();
+//        getDriver().findElement(By.xpath("//input[@name='fromVal']")).sendKeys(value);
+//        String actualResult = getDriver().findElement(By.xpath("//input[@name='toVal']")).getAttribute("value");
+//        assertThat(Float.parseFloat(actualResult)).isCloseTo(Float.parseFloat(result), Percentage.withPercentage(10));
 
     }
 

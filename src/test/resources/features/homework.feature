@@ -2,11 +2,16 @@
   Feature: Scenarios with different web sites
 
     @converter1
-    Scenario: Convert Temperature
+    Scenario Outline: Converter
       Given I go to "converter" page
-      When I click on "Temperature"
-      And I set from "Fahrenheit" to "Celsius"
-      Then I set "54" value and verify that result is "12.2"
+      When I click on "<tab>"
+      And I set from "<from>" to "<to>"
+      Then I set "<set>" value and verify that result is "<res>"
+      Examples:
+        | tab       | from       | to       |set | res  |
+        |Temperature| Fahrenheit | Celsius  | 54 | 12.2 |
+        |Weight     | Pound      | Kilogram | 170 | 77  |
+        |Length     | Mile       | Kilometer | 50 | 80.4|
 
     @converter2
     Scenario: Convert Pound to Kilogram

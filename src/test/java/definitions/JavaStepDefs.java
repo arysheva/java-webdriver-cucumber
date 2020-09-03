@@ -3,6 +3,7 @@ package definitions;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.When;
+import gherkin.ast.ScenarioOutline;
 
 import java.util.*;
 
@@ -277,34 +278,67 @@ public class JavaStepDefs {
 
     @And("I solve more coding challenges")
     public void iSolveMoreCodingChallenges() {
-//        PrintNumFrom0(10);
-//        System.out.println();
-//
-//        PrintAllNumbers(-10, -5);
-//        System.out.println();
-//
-//        int[] myArray = {2, 5, 6, 7, 8, 9, 9, 9, 0 ,-5, -23};
-//        int[] array = {};
-//        PrintArray(myArray);
-//        System.out.println();
-//
-//        PrintEvenNum(myArray);
-//        System.out.println();
-//
-//        System.out.println(IsEmpty(array));
-//        System.out.println(IsEmpty(myArray));
-//
-//        System.out.println(ContainsElement(myArray, 100));
-//
-//        //PrintFizzBuzz(20);
-        String s = "Hello Everyone!";
-
-        System.out.println(getReverse(s));
-        reverse(s);
+        String s = "Hello!";
 
         System.out.println(s);
+        int[] intarr = {1,0,9,8,7,0,-5, 9, 9};
+        System.out.println(Arrays.toString(sort(intarr)));
+        int[] arr = {100, 100, 100};
+        int[] arr1 = {23};
+        int[] arr2 = {10,9,8,0,1};
+
+        find2Max(arr);
+        find2Max(intarr);
+        find2Max(arr1);
+        find2Max(arr2);
+
+        System.out.println(ContainsDuplicates(intarr));
+        System.out.println(IsPalindrome("wow"));
+        System.out.println(IsPalindrome("Anna"));
+        System.out.println(IsPalindrome("WebDriver"));
+
+
+        CountChar("Anna");
+        System.out.println("-------------------------");
+        CountChar("Hello everyone!");
+        System.out.println("-------------------------");
+        CountChar("!");
+        System.out.println("-------------------------");
+        CountChar("aaaaaaaaaaa");
+
+
+
 
     }
+
+    int[] sort(int[] arr)
+    {
+        for (int i=0; i<arr.length; i++)
+        {
+            for(int j=i+1; j<arr.length; j++)
+            {
+                if (arr[i] > arr[j])
+                {
+                    int temp = arr[i];
+                    arr[i] = arr[j];
+                    arr[j] = temp;
+
+                }
+            }
+        }
+        return arr;
+    }
+
+    String reverseNoVar(String s)
+    {
+        for (int i=0; i<s.length(); i++)
+        {
+            s += s.charAt(i);
+        }
+        return s;
+    }
+
+
 
     void reverse(String s)
     {
@@ -387,6 +421,17 @@ public class JavaStepDefs {
         for(int i=0; i<arr.length; i++)
         {
             if(arr[i] == n) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    boolean ContainsElementQ(Object[] arr, Object n)
+    {
+        for(int i=0; i<arr.length; i++)
+        {
+            if(arr[i].equals(n)) {
                 return true;
             }
         }
@@ -493,6 +538,153 @@ public class JavaStepDefs {
         return result;
     }
 
-    
+
+    @Given("I codding")
+    public void iCodding() {
+
+
+    }
+
+    int[] SortMax(int[] arr)
+    {
+        int max;
+        int maxj;
+        int size = arr.length;
+        for(int i=0; i<arr.length;i++)
+        {
+            max = arr[0];
+            maxj = 0;
+            for (int j=0; j<size; j++)
+            {
+                if (arr[j]<max)
+                {
+                    max = arr[j];
+                    maxj = j;
+                }
+            }
+            int temp = arr[maxj];
+            arr[maxj] = arr[size-1];
+            arr[size-1] = temp;
+            size--;
+        }
+        return arr;
+    }
+
+    //Write a function that find 2 max numbers in an array
+
+    void find2Max(int[] arr)
+    {
+        int max = arr[0];
+        for (int i = 1; i < arr.length; i++) {
+            if (max < arr[i]) {
+                max = arr[i];
+            }
+        }
+        int max2=0;
+        boolean found = false;
+        for (int i=0; i<arr.length; i++)
+        {
+            if((!found) || (arr[i]>max2))
+            {
+                if (arr[i] == max)
+                {
+                    continue;
+                }
+                max2 = arr[i];
+                found = true;
+            }
+        }
+        if(!found) {
+            System.out.println("MAX: " + max);
+            System.out.println("Second max not found!");
+        }
+        else {
+            System.out.println("Max: " + max);
+            System.out.println("Second MAX: " + max2);
+        }
+    }
+
+    void Max2Elements(int[] arr) // this function doesn't work if all numbers the same
+    {
+        if(arr.length<2)
+        {
+            System.out.println("Array has less than 2 elements");
+        }else {
+            int max = arr[0];
+            for (int i = 1; i < arr.length; i++) {
+                if (max < arr[i]) {
+                    max = arr[i];
+                }
+            }
+            int max2 = Integer.MIN_VALUE;
+            for (int i = 0; i < arr.length; i++) {
+                if (max2 < arr[i]) {
+                    if (arr[i] == max) {
+                        continue;
+                    }
+                    max2 = arr[i];
+                }
+            }
+
+            System.out.println("Max element: " + max);
+            System.out.println("Second max element: " + max2);
+        }
+
+    }
+
+
+    //Write a function that finds if array contains duplicates
+    boolean ContainsDuplicates (int[] arr)
+    {
+        for (int i=0; i<arr.length;i++)
+        {
+            for(int j=i+1; j<arr.length; j++)
+            {
+                if(arr[i] == arr[j])
+                {
+                    System.out.println(arr[i] + " is dupicate");
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    //Write a function that finds if word is palindrome
+    boolean IsPalindrome (String s)
+    {
+        String reverse = "";
+        for (int i=s.length()-1; i>=0; i--)
+        {
+            reverse += s.charAt(i);
+        }
+
+        if (s.equalsIgnoreCase(reverse))
+            return true;
+        return false;
+    }
+
+    //Write a function that counts number of each character in a string
+    void CountChar (String s)
+    {
+        Map<Character, Integer> countchar = new LinkedHashMap<>();
+
+        for (int i=0; i<s.length(); i++)
+        {
+            if(countchar.containsKey(s.charAt(i)))
+            {
+                countchar.put(s.charAt(i), countchar.get(s.charAt(i))+1);
+            }
+            else
+            {
+                countchar.put(s.charAt(i), 1);
+            }
+        }
+
+        for(Character key : countchar.keySet()) {
+            System.out.println(key + ": " + countchar.get(key));
+        }
+    }
+
 }
 

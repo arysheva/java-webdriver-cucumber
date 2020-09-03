@@ -2,6 +2,7 @@ package definitions;
 
 import static java.lang.StrictMath.abs;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.setMaxElementsForPrinting;
 import static support.TestContext.*;
 
 import cucumber.api.java.bs.A;
@@ -16,8 +17,11 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import javax.swing.text.html.parser.Parser;
 import java.io.FileNotFoundException;
+import java.text.NumberFormat;
+import java.text.ParseException;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 //import static java.lang.Math;
 import java.util.concurrent.TimeUnit;
@@ -209,22 +213,29 @@ public class UspsStepDefs {
     public void iClickOnTheMap(String tab) throws InterruptedException {
         //WebDriverWait wait = new WebDriverWait(getDriver(), 15);
 
-        WebElement overlay = getDriver().findElement(By.xpath("//div[@id='eddm_overlay-progress'][not(@hidden)]"));
-        getWait().until(ExpectedConditions.attributeToBe(overlay, "class", "hide"));
-        getWait().until(ExpectedConditions.invisibilityOf(overlay));
+        //WebElement overlay = getDriver().findElement(By.xpath("//div[@id='eddm_overlay-progress'][not(@hidden)]"));
+        //getWait().until(ExpectedConditions.attributeToBe(overlay, "class", "hide"));
+        //getWait().until(ExpectedConditions.invisibilityOf(overlay));
         // From Ozzy  (still unstable)
         //=======================================
-        WebElement table = getDriver().findElement(By.xpath("//div[@id='route-table']"));
-        getWait().until(ExpectedConditions.visibilityOf(table));
+        //WebElement table = getDriver().findElement(By.xpath("//div[@id='route-table']"));
+        //getWait().until(ExpectedConditions.visibilityOf(table));
         //========================================
 
-        Thread.sleep(3000);
-        getDriver().findElement(By.xpath("//a[@class='route-table-toggle']")).click();
+        //Thread.sleep(3000);
+        //getDriver().findElement(By.xpath("//a[@class='route-table-toggle']")).click();
+        WebElement overlay = getDriver().findElement(By.xpath("//div[@id='eddm_overlay-progress']"));
+        getWait().until(ExpectedConditions.visibilityOf(overlay));
+        getWait().until(ExpectedConditions.invisibilityOf(overlay));
+        //WebElement element = getDriver().findElement(By.xpath("//a[contains(text(), '"+ tab +"')]"));
+        //JSExecutor().executeScript("arguments[0].click();", element);
+        getDriver().findElement(By.xpath("//a[contains(text(), '"+ tab +"')]")).click();
     }
 
     @When("I click {string} on the table")
     public void iClickOnTheTable(String selectAll) {
-        getDriver().findElement(By.xpath("//a[@class='totalsArea']")).click();
+        //getDriver().findElement(By.xpath("//a[@class='totalsArea']")).click();
+        getDriver().findElement(By.xpath("//div[@id='route-table']//a[contains(text(),'" + selectAll + "')]")).click();
     }
 
     @And("I close modal window")
@@ -233,23 +244,27 @@ public class UspsStepDefs {
     }
 
     @Then("I verify that summary of all rows of Cost column is equal Approximate Cost in Order Summary")
-    public void iVerifyThatSummaryOfAllRowsOfCostColumnIsEqualApproximateCostInOrderSummary() throws InterruptedException {
-        //====Tried to scroll down
-            //getDriver().findElement(By.xpath("//div[@class='dojoxGridContent']"))
-            //getDriver().manage().window().maximize();
-            //WebElement element = getDriver().findElement(By.xpath("//div[@class='dojoxGridContent']"));
-            //div[@class='dojoxGridContent']
-            //div[@class='dojoxGridContent']/div[2]
-            //((JavascriptExecutor)getDriver()).executeScript("arguments[0].scrollIntoView();", element);
-            //Thread.sleep(3000);
-        //==================================
+    public void iVerifyThatSummaryOfAllRowsOfCostColumnIsEqualApproximateCostInOrderSummary() throws InterruptedException, ParseException {
+
+        String totalNumberOfRows = getDriver().findElement(By.xpath("//p[@class='value routes']")).getText();
+        int totalNRows = Integer.parseInt(totalNumberOfRows);
         List<WebElement> rows = getDriver().findElements(By.xpath("//div[@class='dojoxGridScrollbox']//td[8]"));
+        while (rows.size() < totalNRows)
+        {
+            getAction().moveToElement(rows.get(rows.size()-1)).perform();
+            rows = getDriver().findElements(By.xpath("//div[@class='dojoxGridScrollbox']//td[8]"));
+        }
+
+        Locale locale = new Locale("en", "US");
+        NumberFormat formatter = NumberFormat.getCurrencyInstance(locale);
         double ActualCost = 0;
 
         for(int i=0; i<rows.size();i++)
         {
             String s = rows.get(i).getText();
-            ActualCost += Double.parseDouble(s.substring(s.lastIndexOf("$")+1));
+            //ActualCost += Double.parseDouble(s.substring(s.lastIndexOf("$")+1));
+            ActualCost += formatter.parse(s).doubleValue();
+
         }
 
         double eps = 10;
