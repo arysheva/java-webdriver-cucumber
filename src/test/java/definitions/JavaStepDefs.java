@@ -4,7 +4,9 @@ import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.When;
 import gherkin.ast.ScenarioOutline;
+import pages.*;
 
+import javax.swing.plaf.IconUIResource;
 import java.util.*;
 
 public class JavaStepDefs {
@@ -306,9 +308,42 @@ public class JavaStepDefs {
         System.out.println("-------------------------");
         CountChar("aaaaaaaaaaa");
 
+        System.out.println("****************");
+        System.out.println(IsPalindrome2("refer"));
+        System.out.println(IsPalindrome2("noon"));
+        System.out.println(IsPalindrome2("web"));
 
+        int[] someArr = {2,5,6,8,10,45,70};
+        int num = 11;
+        System.out.println("is SUM??");
+        System.out.println(IsSUM(someArr, num));
+        System.out.println(factorial(5));
+        System.out.println("=================================Search============================");
+        System.out.println(BinarySearch(someArr, 70));
+        System.out.println(BinarySearch(someArr, 45));
+    }
 
+    long factorial (int n)
+    {
+        if (n > 1)
+            return n * factorial(n-1);
+        else
+            return 1;
+    }
 
+    boolean IsSUM (int[] arr, int n)
+    {
+        for(int i = 0; i<arr.length; i++)
+        {
+            for (int j=i+1; j < arr.length; j++)
+            {
+                if ((arr[i] + arr[j]) == n)
+                {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     int[] sort(int[] arr)
@@ -328,6 +363,8 @@ public class JavaStepDefs {
         }
         return arr;
     }
+
+
 
     String reverseNoVar(String s)
     {
@@ -664,6 +701,22 @@ public class JavaStepDefs {
         return false;
     }
 
+    boolean IsPalindrome2 (String s)
+    {
+        if (s == null || s.equals(""))
+        {
+            throw new RuntimeException("Unexpected data:" + s);
+        }
+        for (int i=0; i<s.length()/2; i++)
+        {
+            if(s.charAt(i) != s.charAt(s.length()-1-i))
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+
     //Write a function that counts number of each character in a string
     void CountChar (String s)
     {
@@ -686,5 +739,94 @@ public class JavaStepDefs {
         }
     }
 
+    int BinarySearch(int[] arr, int element)
+    {
+        int start=0;
+        int end=arr.length-1;
+        int mid;
+        int myguess;
+
+        while (start <= end)
+        {
+            mid = (end+start)/2;
+            myguess = arr[mid];
+
+            if(element == myguess)
+            {
+                return mid;
+            }
+            else if (myguess > element)
+            {
+                end = mid -1;
+            }
+            else
+            {
+                start = mid+1;
+            }
+        }
+
+        return -1;
+
+    }
+
+    @Given("I work with classes")
+    public void iWorkWithClasses() {
+
+        Cat tom = new Cat("tom");
+        tom.walk();
+        tom.eat("fish");
+        tom.sleep();
+
+        Cat charlie = new Cat("charlie");
+        charlie.sleep();
+        Dog Jack = new Dog();
+        Jack.setName("Jaaaack");
+        String name = Jack.getName();
+        System.out.println(name);
+
+        Animal dog = new Dog();
+        System.out.println(dog.getName());
+        dog.walk();
+        dog.sleep();
+        dog.speak();
+        dog.eat("fish");
+        Animal bird = new Bird();
+        Bird papuga = new Bird();
+        bird.setName("Karl");
+        papuga.setName("Twit");
+        papuga.fly();
+
+        Bird butterfly = new Butterfly();
+        butterfly.speak();
+        butterfly.fly();
+
+        Butterfly bu = new Butterfly();
+        bu.setName("Red Admiral");
+        bu.setColor("blue");
+        bu.eat("honeydew");
+
+
+
+
+        List<Animal> list = new ArrayList<>();
+        list.add(dog);
+        list.add(bird);
+        list.add(papuga);
+        list.add(butterfly);
+        list.add(bu);
+
+
+
+        System.out.println("======== My list of Animals ========");
+        printAnimalNames(list);
+
+
+    }
+    public void printAnimalNames(List<Animal> animals) {
+        for (Animal animal : animals) {
+            animal.speak();
+            System.out.println(animal.getName());
+        }
+    }
 }
 

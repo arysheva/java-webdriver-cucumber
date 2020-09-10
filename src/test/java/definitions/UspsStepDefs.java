@@ -1,6 +1,7 @@
 package definitions;
 
 import static java.lang.StrictMath.abs;
+import static java.lang.StrictMath.exp;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.setMaxElementsForPrinting;
 import static support.TestContext.*;
@@ -14,6 +15,7 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.w3c.dom.ranges.RangeException;
 
 import javax.swing.text.html.parser.Parser;
 import java.io.FileNotFoundException;
@@ -96,6 +98,7 @@ public class UspsStepDefs {
     public void iSetInFilters(String filter) throws InterruptedException {
         WebElement element = getDriver().findElement(By.xpath("//a[@title='" + filter + "']"));
         JSExecutor().executeScript("arguments[0].click();", element);
+        Thread.sleep(2000);
     }
 
     @Then("I verify that {string} results found")
@@ -162,7 +165,7 @@ public class UspsStepDefs {
     @When("I select {string} in results")
     public void iSelectInResults(String selection) throws InterruptedException {
         getWait().until(ExpectedConditions.presenceOfElementLocated(By.xpath("//span[@id='title_23']/span")));
-        WebElement element = getDriver().findElement(By.xpath("//span[@id='title_23']/span"));
+        WebElement element = getDriver().findElement(By.xpath("//span[contains(text(),'"+selection+"')]"));
         JSExecutor().executeScript("arguments[0].click();", element);
     }
 
@@ -170,7 +173,7 @@ public class UspsStepDefs {
     public void iClickButton(String button) throws InterruptedException {
         WebElement element = getDriver().findElement(By.xpath("//a[@class='button--primary']"));
         JSExecutor().executeScript("arguments[0].click();", element);
-        getWait().until(ExpectedConditions.numberOfWindowsToBe(2));
+        //getWait().until(ExpectedConditions.numberOfWindowsToBe(2));
     }
 
     @Then("I validate that Sign In is required")
@@ -183,8 +186,8 @@ public class UspsStepDefs {
 
         getWait(10).until(ExpectedConditions.titleContains("Sign In"));
 
-        getDriver().findElement(By.xpath("//button[@id='btn-submit']")).click();
-        getWait().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[@id='error-password']")));
+        //getDriver().findElement(By.xpath("//button[@id='btn-submit']")).click();
+        //getWait().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[@id='error-password']")));
 
         // switch back
         getDriver().switchTo().window(originalWindow);
@@ -211,30 +214,14 @@ public class UspsStepDefs {
 
     @And("I click {string} on the map")
     public void iClickOnTheMap(String tab) throws InterruptedException {
-        //WebDriverWait wait = new WebDriverWait(getDriver(), 15);
-
-        //WebElement overlay = getDriver().findElement(By.xpath("//div[@id='eddm_overlay-progress'][not(@hidden)]"));
-        //getWait().until(ExpectedConditions.attributeToBe(overlay, "class", "hide"));
-        //getWait().until(ExpectedConditions.invisibilityOf(overlay));
-        // From Ozzy  (still unstable)
-        //=======================================
-        //WebElement table = getDriver().findElement(By.xpath("//div[@id='route-table']"));
-        //getWait().until(ExpectedConditions.visibilityOf(table));
-        //========================================
-
-        //Thread.sleep(3000);
-        //getDriver().findElement(By.xpath("//a[@class='route-table-toggle']")).click();
         WebElement overlay = getDriver().findElement(By.xpath("//div[@id='eddm_overlay-progress']"));
         getWait().until(ExpectedConditions.visibilityOf(overlay));
         getWait().until(ExpectedConditions.invisibilityOf(overlay));
-        //WebElement element = getDriver().findElement(By.xpath("//a[contains(text(), '"+ tab +"')]"));
-        //JSExecutor().executeScript("arguments[0].click();", element);
         getDriver().findElement(By.xpath("//a[contains(text(), '"+ tab +"')]")).click();
     }
 
     @When("I click {string} on the table")
     public void iClickOnTheTable(String selectAll) {
-        //getDriver().findElement(By.xpath("//a[@class='totalsArea']")).click();
         getDriver().findElement(By.xpath("//div[@id='route-table']//a[contains(text(),'" + selectAll + "')]")).click();
     }
 
@@ -262,7 +249,6 @@ public class UspsStepDefs {
         for(int i=0; i<rows.size();i++)
         {
             String s = rows.get(i).getText();
-            //ActualCost += Double.parseDouble(s.substring(s.lastIndexOf("$")+1));
             ActualCost += formatter.parse(s).doubleValue();
 
         }
@@ -355,9 +341,6 @@ public class UspsStepDefs {
         getDriver().findElement(By.xpath("//input[@id='destinationpostal']")).sendKeys(where.get("zip"));
         getDriver().findElement(By.xpath("//input[@id='destinationcity']")).sendKeys(where.get("city"));
         getDriver().findElement(By.xpath("//select[@id='destinationstate']/option[text()='" + where.get("state") + "']")).click();
-        //getDriver().findElement(By.xpath("//input[@id='originemail']")).sendKeys(where.get("email"));
-        //getDriver().findElement(By.xpath("//input[@id='originphone']")).sendKeys(where.get("phone"));
-
     }
 
     @And("I set packaging type and weight")
@@ -449,5 +432,94 @@ public class UspsStepDefs {
     public void iSubmitReviewTheShipmentForm() {
         WebElement review = getDriver().findElement(By.xpath("//button[@id='nbsBackForwardNavigationReviewPrimaryButton']"));
         JSExecutor().executeScript("arguments[0].click();", review);
+    }
+
+    @And("I enter {string} into store search")
+    public void iEnterIntoStoreSearch(String str) {
+        getDriver().findElement(By.xpath("//input[@id='store-search']")).sendKeys(str);
+    }
+
+    @Then("I search and validate no products found")
+    public void iSearchAndValidateNoProductsFound() {
+        getDriver().findElement(By.xpath("//input[@id='store-search-btn']")).click();
+        WebElement no_res = getDriver().findElement(By.xpath("//div[@class='no-product']"));
+        assertThat(no_res.isDisplayed()).isTrue();
+    }
+
+    @And("choose mail service Priority Mail")
+    public void chooseMailServicePriorityMail() {
+        WebElement PrMail = getDriver().findElement(By.xpath("//input[@id='checkbox-type-Mail Service-Priority Mail-1']/.."));
+        JSExecutor().executeScript("arguments[0].scrollIntoView();", PrMail);
+        PrMail.click();
+    }
+
+    @Then("I verify {int} items found")
+    public void iVerifyItemsFound(int qty) {
+        WebElement result = getDriver().findElement(By.xpath("//h2[contains(@class,'results-per-page')]"));
+        assertThat(result.getText().contains("of "+qty+" Results")).isTrue();
+    }
+
+    @When("I unselect Stamps checkbox")
+    public void iUnselectStampsCheckbox() {
+        getDriver().findElement(By.xpath("//input[@id='first-category-checkbox']/..")).click();
+    }
+
+    @And("select Vertical stamp Shape")
+    public void selectVerticalStampShape() {
+        //label[contains(text(),'Vertical')]
+        WebElement verticalStamp = getDriver().findElement(By.xpath("//label[contains(text(),'Vertical')]"));
+        JSExecutor().executeScript("arguments[0].scrollIntoView();", verticalStamp);
+        verticalStamp.click();
+    }
+
+    @And("I click Blue color")
+    public void iClickBlueColor() {
+        WebElement blue = getDriver().findElement(By.xpath("//div[contains(@onclick, 'blue')]"));
+        JSExecutor().executeScript("arguments[0].scrollIntoView();", blue);
+        blue.click();
+    }
+
+    @Then("I verify {string} and {string} filters")
+    public void iVerifyAndFilters(String filter1, String filter2) throws InterruptedException {
+        WebElement filterOne = getDriver().findElement(By.xpath("//div[@class='cartridge-viewport']//span[contains(text(),'"+ filter1 +"')]"));
+        WebElement filterTwo = getDriver().findElement(By.xpath("//div[@class='cartridge-viewport']//span[contains(text(),'"+ filter2 +"')]"));
+        assertThat(filterOne.isDisplayed() && filterTwo.isDisplayed()).isTrue();
+    }
+
+    @And("I verify that items below {int} dollars exists")
+    public void iVerifyThatItemsBelowDollarsExists(int price) throws ParseException {
+
+        List <WebElement> prices = getDriver().findElements(By.xpath("//div[@class='results-product-preview-price']//p"));
+        Locale locale = new Locale("en", "US");
+        NumberFormat formatter = NumberFormat.getCurrencyInstance(locale);
+        for (int i =0; i<prices.size(); i++)
+        {
+            if (price > formatter.parse(prices.get(i).getText()).intValue())
+            {
+                    assertThat(price > formatter.parse(prices.get(i).getText()).intValue()).isTrue();
+                    break;
+            }
+            else
+                throw new RuntimeException("ERRORRR!!");
+        }
+
+    }
+
+    @And("verify {string} service exists")
+    public void verifyServiceExists(String service) {
+        assertThat(getDriver().findElement(By.xpath("//select[@id='passportappointmentType']//option[text()='"+service+"']")).
+                isEnabled()).isTrue();
+
+    }
+
+    @And("I reserve new PO box for {string}")
+    public void iReserveNewPOBoxFor(String zip) throws InterruptedException {
+        getDriver().findElement(By.xpath("//input[@id='searchInput']")).sendKeys(zip);
+        getDriver().findElement(By.xpath("//a[@class='searchBtn']")).click();
+    }
+
+    @Then("I verify that {string} present")
+    public void iVerifyThatPresent(String text) {
+
     }
 }

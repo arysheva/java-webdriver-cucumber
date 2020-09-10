@@ -31,6 +31,10 @@
     Scenario: Coding challenges
       Given I solve more coding challenges
 
+    @java4
+    Scenario: I work with classes
+      Given I work with classes
+
 
 
 
