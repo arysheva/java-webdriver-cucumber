@@ -1,4 +1,4 @@
-package pages;
+package classes_practice;
 
 public class Butterfly extends Bird {
 

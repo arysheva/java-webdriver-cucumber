@@ -8,7 +8,7 @@ import cucumber.api.java.en.When;
 import org.assertj.core.data.Percentage;
 import org.openqa.selenium.By;
 import static org.assertj.core.api.Assertions.assertThat;
-public class HomeworkStepDefs {
+public class CalculatorStepDefs {
     @When("I click on {string}")
     public void iClickOn(String tab) {
         getDriver().findElement(By.xpath("//a[text()='" + tab + "']")).click();

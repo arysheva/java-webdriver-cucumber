@@ -1,12 +1,10 @@
 package definitions;
 
+import classes_practice.*;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.When;
-import gherkin.ast.ScenarioOutline;
-import pages.*;
 
-import javax.swing.plaf.IconUIResource;
 import java.util.*;
 
 public class JavaStepDefs {
@@ -321,6 +319,14 @@ public class JavaStepDefs {
         System.out.println("=================================Search============================");
         System.out.println(BinarySearch(someArr, 70));
         System.out.println(BinarySearch(someArr, 45));
+
+
+        System.out.println(fibrec(10));
+
+        System.out.println(isPrime(10));
+        System.out.println(isPrime(11));
+        System.out.println(isPrime(2));
+        System.out.println(isPrime(1));
     }
 
     long factorial (int n)
@@ -605,6 +611,56 @@ public class JavaStepDefs {
             size--;
         }
         return arr;
+    }
+
+    //fibbonacci
+
+    long fib(int seq)
+    {
+        long prevFib = 0;
+        long nextFib = 1;
+        for(int i=0; i<seq; i++)
+        {
+            long temp = nextFib;
+            nextFib = prevFib+ nextFib;
+            prevFib = temp;
+        }
+        return nextFib;
+    }
+
+    //fibb recursive
+
+    long fibrec(long num)
+    {
+        if(num == 0 || num == 1)
+        {
+            return num;
+        }
+
+        return fibrec(num-1) + fibrec(num-2);
+    }
+
+    //prime or not
+
+    boolean isPrime(int num)
+    {
+        if(num<2)
+        {
+            return false;
+        }
+        double sqrt = Math.sqrt(num);
+        if (num %2 ==0 || num != 2)
+        {
+            return false;
+        }
+        for (int i=3; i<=sqrt; i+=2)
+        {
+            if (num%i==0)
+            {
+                return false;
+            }
+        }
+        return true;
     }
 
     //Write a function that find 2 max numbers in an array
