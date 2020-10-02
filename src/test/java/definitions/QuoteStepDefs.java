@@ -17,18 +17,7 @@ public class QuoteStepDefs {
 
     QuoteResult resultForm = new QuoteResult();
     QuoteForm form = new QuoteForm();
-    @Given("I open {string} page")
-    public void iOpenPage(String page) throws InterruptedException {
-    switch (page)
-        {
-            case "quote":
-                new QuoteForm().open();
-                break;
-            default:
-                throw new RuntimeException("Unknown page " + page);
-        }
 
-    }
 
     @And("I fill out required fields for {string} opp")
     public void iFillOutRequiredFieldsFor(String role) throws InterruptedException {

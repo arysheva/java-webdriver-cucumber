@@ -8,7 +8,7 @@ import org.openqa.selenium.support.FindBy;
 import static org.assertj.core.api.Assertions.assertThat;
 import static support.TestContext.getDriver;
 
-public class QuoteForm extends QuotePage {
+public class QuoteForm extends Page {
 
     public QuoteForm() {
         url = "https://skryabin.com/market/quote.html";
@@ -104,7 +104,8 @@ public class QuoteForm extends QuotePage {
     //    dynamic fields    //
     //////////////////////////
 
-    private WebElement errorElement(String fieldName) {
+    private WebElement errorElement(String fieldName)
+    {
         return getDriver().findElement(By.id(fieldName + "-error"));
     }
 

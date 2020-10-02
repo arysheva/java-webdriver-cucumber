@@ -1,24 +1,16 @@
 package definitions;
 
 import static java.lang.StrictMath.abs;
-import static java.lang.StrictMath.exp;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.setMaxElementsForPrinting;
 import static support.TestContext.*;
 
-import cucumber.api.java.bs.A;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import org.openqa.selenium.*;
-import org.openqa.selenium.interactions.Actions;
-import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
-import org.w3c.dom.ranges.RangeException;
+import pages.usps.*;
 
-import javax.swing.text.html.parser.Parser;
-import java.io.FileNotFoundException;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.LinkedHashMap;
@@ -26,9 +18,17 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 //import static java.lang.Math;
-import java.util.concurrent.TimeUnit;
+
 
 public class UspsStepDefs {
+
+    UspsHome uspshome = new UspsHome();
+    UspsLookUpByZip lookUpByZip = new UspsLookUpByZip();
+    UspsHeader uspsHeader = new UspsHeader();
+    UspsByAddressForm uspsByAddressForm = new UspsByAddressForm();
+    UspsByAddressResult uspsByAddressResult = new UspsByAddressResult();
+    UspsPriceCalculatorForm uspsPriceCalculatorForm = new UspsPriceCalculatorForm();
+
     @When("I go to Lookup ZIP page by address")
     public void iGoToLookupZIPPageByAddress() throws InterruptedException {
         //Actions action = new Actions(getDriver());
@@ -521,5 +521,52 @@ public class UspsStepDefs {
     @Then("I verify that {string} present")
     public void iVerifyThatPresent(String text) {
 
+    }
+
+
+
+    @When("I go to Lookup ZIP page by address OOP")
+    public void iGoToLookupZIPPageByAddressOOP() {
+        uspshome.goToLookUpByZip();
+        lookUpByZip.clickFindByAddress();
+    }
+
+    @And("I fill out {string} street, {string} city, {string} state OOP")
+    public void iFillOutStreetCityStateOOP(String street, String city, String state) {
+        uspsByAddressForm.fillStreet(street);
+        uspsByAddressForm.fillCity(city);
+        uspsByAddressForm.selectState(state);
+        uspsByAddressForm.clickFind();
+
+    }
+
+    @Then("I validate {string} zip code exists in the result OOP")
+    public void iValidateZipCodeExistsInTheResultOOP(String zip) throws InterruptedException {
+        assertThat(uspsByAddressResult.getResultText()).contains(zip);
+        assertThat(uspsByAddressResult.allResultElementsContain(zip));
+    }
+
+    @When("I go to Calculate Price Page oop")
+    public void iGoToCalculatePricePageOop() {
+        uspshome.goToCalculatePrice();
+    }
+
+    @And("I select {string} with {string} shape oop")
+    public void iSelectWithShapeOop(String country, String shape) throws InterruptedException {
+        uspsPriceCalculatorForm.selectCountry(country);
+        uspsPriceCalculatorForm.chosePostShape(shape);
+
+    }
+
+    @And("I define {string} quantity oop")
+    public void iDefineQuantityOop(String qty) throws InterruptedException {
+        uspsPriceCalculatorForm.fillQuantity(qty);
+        //Thread.sleep(3000);
+    }
+
+    @Then("I calculate the price and validate cost is {string} oop")
+    public void iCalculateThePriceAndValidateCostIsOop(String cost) {
+        uspsPriceCalculatorForm.calculatePrice();
+        assertThat(uspsPriceCalculatorForm.getTotalPrice()).isEqualTo(cost);
     }
 }

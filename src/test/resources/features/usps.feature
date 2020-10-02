@@ -128,6 +128,25 @@
       And I click "Schedule an Appointment" button
       And verify "Passport Renewal" service exists
 
+    @usps7
+    Scenario Outline: Validate ZIP code OOP
+      Given I open "usps" page
+      When I go to Lookup ZIP page by address OOP
+      And I fill out "<street>" street, "<city>" city, "<state>" state OOP
+      Then I validate "<zip>" zip code exists in the result OOP
+      Examples:
+        |street             |city     |state| zip |
+        |4970 El Camino Real|Los Altos|CA   |94022|
+        |371 Elan Village Ln|San Jose |CA   |95134|
+
+    @usps8
+    Scenario: Calculate price OOP
+      Given I open "usps" page
+      When I go to Calculate Price Page oop
+      And I select "Canada" with "Postcard" shape oop
+      And I define "2" quantity oop
+      Then I calculate the price and validate cost is "$2.40" oop
+
 
 #    Scenario: PO Box
 #      Given I go to "usps" page
