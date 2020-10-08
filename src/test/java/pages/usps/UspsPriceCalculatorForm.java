@@ -25,9 +25,10 @@ public class UspsPriceCalculatorForm extends UspsHeader {
     private WebElement totalPrice;
 
 
-    public void selectCountry(String value)
+    public UspsPriceCalculatorForm selectCountry(String value)
     {
         new Select(country).selectByVisibleText(value);
+        return this;
     }
 
 
@@ -42,14 +43,17 @@ public class UspsPriceCalculatorForm extends UspsHeader {
        return getDriver().findElement(By.xpath("//input[@id='" + option.get(shape) + "']"));
    }
 
-   public void chosePostShape(String shape)
+   public UspsPriceCalculatorForm chosePostShape(String shape)
    {
        click(postShape(shape));
+       return this;
    }
 
-    public void fillQuantity(String value)
+    public UspsPriceCalculatorForm fillQuantity(String value)
     {
+
         quantity.sendKeys(value);
+        return this;
     }
 
     public void calculatePrice()

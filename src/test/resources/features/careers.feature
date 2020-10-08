@@ -7,3 +7,4 @@ Feature: Careers scenarios
     Then I verify "recruiter" login
     When I remove "Principal Automation Engineer" position
     And I verify "Principal Automation Engineer" position is removed
+

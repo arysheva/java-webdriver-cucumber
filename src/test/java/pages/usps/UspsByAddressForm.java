@@ -19,24 +19,30 @@ public class UspsByAddressForm extends UspsHeader{
     @FindBy(id = "zip-by-address")
     private WebElement find;
 
-    public void fillStreet(String streetValue)
+    public UspsByAddressForm fillStreet(String streetValue)
     {
+
         street.sendKeys(streetValue);
+        return this;
     }
 
-    public void fillCity(String cityValue)
+    public UspsByAddressForm fillCity(String cityValue)
     {
         city.sendKeys(cityValue);
+        return this;
     }
 
-    public void clickFind()
+    public UspsByAddressResult clickFind()
     {
+
         find.click();
+        return new UspsByAddressResult();
     }
 
-    public void selectState(String stateValue)
+    public UspsByAddressForm selectState(String stateValue)
     {
         new Select(state).selectByValue(stateValue);
+        return this;
 
     }
 

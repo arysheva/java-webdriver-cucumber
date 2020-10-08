@@ -533,10 +533,7 @@ public class UspsStepDefs {
 
     @And("I fill out {string} street, {string} city, {string} state OOP")
     public void iFillOutStreetCityStateOOP(String street, String city, String state) {
-        uspsByAddressForm.fillStreet(street);
-        uspsByAddressForm.fillCity(city);
-        uspsByAddressForm.selectState(state);
-        uspsByAddressForm.clickFind();
+        uspsByAddressForm.fillStreet(street).fillCity(city).selectState(state).clickFind();
 
     }
 
@@ -553,8 +550,7 @@ public class UspsStepDefs {
 
     @And("I select {string} with {string} shape oop")
     public void iSelectWithShapeOop(String country, String shape) throws InterruptedException {
-        uspsPriceCalculatorForm.selectCountry(country);
-        uspsPriceCalculatorForm.chosePostShape(shape);
+        uspsPriceCalculatorForm.selectCountry(country).chosePostShape(shape);
 
     }
 
